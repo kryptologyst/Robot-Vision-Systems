@@ -1,0 +1,93 @@
+# Training Configuration for Robot Vision Systems
+
+# General settings
+seed: 42
+device: "auto"  # "auto", "cuda", "mps", "cpu"
+log_level: "INFO"
+
+# Data settings
+data:
+  train_data_path: "data/train"
+  val_data_path: "data/val"
+  test_data_path: "data/test"
+  batch_size: 16
+  num_workers: 4
+  image_size: [640, 640]
+
+# Detection training
+detection:
+  model_name: "yolov8n.pt"
+  epochs: 100
+  learning_rate: 0.01
+  weight_decay: 0.0005
+  momentum: 0.937
+  warmup_epochs: 3
+  warmup_momentum: 0.8
+  warmup_bias_lr: 0.1
+  box_loss_gain: 0.05
+  cls_loss_gain: 0.5
+  dfl_loss_gain: 1.5
+  confidence_threshold: 0.5
+  nms_threshold: 0.45
+
+# Pose estimation training
+pose:
+  method: "deep_learning"  # "pnp" or "deep_learning"
+  epochs: 200
+  learning_rate: 0.001
+  batch_size: 32
+  num_keypoints: 8
+  loss_weights:
+    position: 1.0
+    orientation: 1.0
+    keypoints: 0.5
+
+# Visual servoing training
+servoing:
+  method: "reinforcement_learning"  # "classical" or "reinforcement_learning"
+  episodes: 1000
+  learning_rate: 0.0003
+  gamma: 0.99
+  epsilon_start: 1.0
+  epsilon_end: 0.01
+  epsilon_decay: 0.995
+  replay_buffer_size: 10000
+  batch_size: 64
+
+# Optimization settings
+optimization:
+  optimizer: "adam"  # "adam", "sgd", "adamw"
+  scheduler: "cosine"  # "cosine", "step", "plateau"
+  early_stopping:
+    enabled: true
+    patience: 20
+    min_delta: 0.001
+
+# Validation settings
+validation:
+  frequency: 5  # Validate every N epochs
+  metrics:
+    - "mAP"
+    - "precision"
+    - "recall"
+    - "f1_score"
+
+# Checkpointing
+checkpointing:
+  save_frequency: 10  # Save every N epochs
+  save_best: true
+  save_last: true
+  checkpoint_dir: "checkpoints"
+
+# Logging
+logging:
+  enable_tensorboard: true
+  enable_wandb: false
+  log_dir: "logs"
+  wandb_project: "robot-vision-systems"
+
+# Hardware settings
+hardware:
+  mixed_precision: true
+  gradient_accumulation_steps: 1
+  max_grad_norm: 10.0

@@ -1,0 +1,126 @@
+# Evaluation Configuration for Robot Vision Systems
+
+# General settings
+seed: 42
+device: "auto"  # "auto", "cuda", "mps", "cpu"
+log_level: "INFO"
+
+# Evaluation settings
+evaluation:
+  num_samples: 1000
+  confidence_threshold: 0.5
+  iou_threshold: 0.5
+  save_results: true
+  results_dir: "evaluation_results"
+
+# Detection evaluation
+detection:
+  model_name: "yolov8n.pt"
+  confidence_threshold: 0.5
+  nms_threshold: 0.45
+  metrics:
+    - "mAP_50"
+    - "mAP_50_95"
+    - "precision"
+    - "recall"
+    - "f1_score"
+    - "fps"
+    - "latency"
+
+# Pose estimation evaluation
+pose:
+  method: "pnp"  # "pnp" or "deep_learning"
+  camera_matrix:
+    fx: 500.0
+    fy: 500.0
+    cx: 320.0
+    cy: 240.0
+  metrics:
+    - "add_score"
+    - "add_s_score"
+    - "projection_error"
+    - "rotation_error"
+    - "translation_error"
+    - "success_rate"
+
+# Visual servoing evaluation
+servoing:
+  method: "ibvs"  # "ibvs", "pbvs", "hybrid"
+  gain: 1.0
+  max_velocity: 0.5
+  max_angular_velocity: 1.0
+  convergence_threshold: 0.01
+  metrics:
+    - "convergence_time"
+    - "overshoot"
+    - "steady_state_error"
+    - "control_effort"
+    - "success_rate"
+    - "stability_margin"
+
+# Performance benchmarking
+performance:
+  benchmark_runs: 5
+  warmup_runs: 2
+  measure_memory: true
+  measure_cpu: true
+  measure_gpu: true
+  metrics:
+    - "fps"
+    - "latency"
+    - "throughput"
+    - "memory_usage"
+    - "cpu_usage"
+    - "gpu_usage"
+
+# Dataset settings
+dataset:
+  type: "synthetic"  # "synthetic", "real", "mixed"
+  synthetic:
+    num_objects: 5
+    object_types: ["cube", "cylinder", "sphere"]
+    lighting_conditions: ["normal", "bright", "dark"]
+    occlusion_levels: [0.0, 0.2, 0.5]
+  
+  real:
+    data_path: "data/evaluation"
+    ground_truth_format: "yolo"  # "yolo", "coco", "custom"
+
+# Output settings
+output:
+  save_images: true
+  save_videos: false
+  save_metrics: true
+  save_leaderboard: true
+  output_dir: "evaluation_output"
+  
+  # Visualization settings
+  visualization:
+    draw_detections: true
+    draw_tracks: true
+    draw_poses: true
+    draw_trajectories: true
+    show_confidence: true
+    show_class_names: true
+
+# Comparison settings
+comparison:
+  baseline_methods:
+    - "yolov8n"
+    - "yolov8s"
+    - "yolov8m"
+  custom_methods:
+    - "our_method"
+  
+  metrics_to_compare:
+    - "mAP_50"
+    - "fps"
+    - "latency"
+    - "success_rate"
+
+# Statistical analysis
+statistics:
+  confidence_interval: 0.95
+  significance_level: 0.05
+  bootstrap_samples: 1000
+  paired_tests: true

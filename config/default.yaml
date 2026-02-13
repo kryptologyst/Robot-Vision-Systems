@@ -1,0 +1,65 @@
+# Robot Vision Systems Configuration
+
+# Detection settings
+detection:
+  model_name: "yolov8n.pt"
+  confidence_threshold: 0.5
+  nms_threshold: 0.45
+  max_detections: 100
+
+# Pose estimation settings
+pose:
+  method: "pnp"  # "pnp" or "deep_learning"
+  camera_matrix:
+    fx: 500.0
+    fy: 500.0
+    cx: 320.0
+    cy: 240.0
+  convergence_threshold: 0.01
+
+# Visual servoing settings
+servoing:
+  method: "ibvs"  # "ibvs", "pbvs", or "hybrid"
+  gain: 1.0
+  max_linear_velocity: 0.5
+  max_angular_velocity: 1.0
+  convergence_threshold: 5.0
+
+# Scene analysis settings
+scene:
+  enable_depth_estimation: true
+  enable_semantic_segmentation: true
+  depth_method: "monocular"  # "monocular" or "stereo"
+
+# Camera settings
+camera:
+  width: 640
+  height: 480
+  fps: 30
+  device_id: 0
+
+# Simulation settings
+simulation:
+  enable: false
+  physics_engine: "pybullet"  # "pybullet", "mujoco", "gazebo"
+  real_time_factor: 1.0
+
+# ROS 2 settings
+ros2:
+  enable: false
+  namespace: "robot_vision"
+  node_name: "vision_system"
+
+# Logging settings
+logging:
+  level: "INFO"
+  enable_tensorboard: true
+  enable_wandb: false
+  log_dir: "logs"
+
+# Safety settings
+safety:
+  enable_velocity_limits: true
+  enable_emergency_stop: true
+  max_acceleration: 2.0
+  collision_threshold: 0.1
